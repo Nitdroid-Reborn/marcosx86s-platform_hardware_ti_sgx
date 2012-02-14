@@ -79,9 +79,11 @@ include ../common/android/features.mk
 
 ifneq ($(strip $(KERNELDIR)),)
  include ../kernel_version.mk
- ifeq ($(call kernel-version-at-least,2,6,35),true)
+ ifeq ($(call kernel-version-at-least,2,6,32),true)
   PVR_NO_FULL_CACHE_OPS := 1
   PVR_NO_OMAP_TIMER := 1
+  PVR_LDM_PLATFORM_PRE_REGISTERED := 1
+  PVR_LDM_PLATFORM_PRE_REGISTERED_DEV := "\"pvrsrvkm\""
  endif
  ifeq ($(call kernel-version-at-least,2,6,39),true)
   ifeq ($(LDM_PLATFORM),1)

@@ -120,6 +120,8 @@ MODULE_SUPPORTED_DEVICE(DEVNAME);
 #endif
 #endif	
 
+static int def_novsync_mode;
+
 void *OMAPLFBAllocKernelMem(unsigned long ulSize)
 {
 	return kmalloc(ulSize, GFP_KERNEL);
@@ -630,6 +632,8 @@ OMAPLFB_BOOL OMAPLFBSetUpdateMode(OMAPLFB_DEVINFO *psDevInfo, OMAPLFB_UPDATE_MOD
 
 OMAPLFB_BOOL OMAPLFBWaitForVSync(OMAPLFB_DEVINFO *psDevInfo)
 {
+    if (def_novsync_mode)
+        return OMAPLFB_TRUE;
 #if defined PLAT_TI81xx
       int r;
       void grpx_irq_wait_handler(void *data)
@@ -1089,4 +1093,5 @@ static void __exit OMAPLFB_Cleanup(void)
 #if !defined(SUPPORT_DRI_DRM)
 late_initcall(OMAPLFB_Init);
 module_exit(OMAPLFB_Cleanup);
+module_param_named(novsync_mode, def_novsync_mode, bool, 0644);
 #endif
